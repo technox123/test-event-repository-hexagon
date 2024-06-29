@@ -29,7 +29,7 @@ const challenges = [
     {
         id: 3,
         title: "Hespori Speed Challenge",
-        endTime: '2024-06-30T00:00:00Z',
+        endTime: '2024-06-30T11:00:00Z',
         steps: [
             { text: "The <strong>password is 'Hexpori be damned'</strong>, which must be in the  screenshot, with the <strong>time in the chat box, your name visible, your inventory tab open</strong> and with a <strong>clear view of the gear you are wearing</strong> whilst <string>still in the hespori cave!</strong>", image: "challenges/3/example.png"},
             { text: "Fastest 3 times from each team will be totalled to decide the winning team."},

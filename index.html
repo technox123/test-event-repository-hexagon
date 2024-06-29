@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Scaler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .full-page-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            background: url('main_board.png') no-repeat center center;
+            background-size: contain; /* Change to contain to ensure the whole image is visible */
+        }
+        .svg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: auto; /* Allow pointer events for SVG */
+        }
+        .hexagon {
+            cursor: pointer;
+            fill: transparent; /* Make hexagons transparent by default */
+            stroke-width: 2;
+        }
+        .info-box {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 10;
+            width: auto;
+            max-width: 300px;
+            white-space: nowrap;
+        }
+        .info-box .hex-id {
+            position: absolute;
+            top: 1px;
+            right: 10px;
+            color: rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+        /* Define the glow effect */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Glow color classes */
+        .glow-team-1 {
+            fill: #FF0000;
+            stroke: #FF0000; /* Red */
+            stroke-width: 1;
+            filter: url(#glow-red);
+        }
+        .glow-team-2 {
+            fill: #B200FF;
+            stroke: #B200FF; /* Purple */
+            stroke-width: 1;
+            filter: url(#glow-purple);
+        }
+        .glow-team-3 {
+            fill: #0026FF;
+            stroke: #0026FF; /* Blue */
+            stroke-width: 1;
+            filter: url(#glow-blue);
+        }
+        .glow-team-4 {
+            fill: #FFAE00;
+            stroke: #FFAE00; /* Orange */
+            stroke-width: 1;
+            filter: url(#glow-orange);
+        }
+        .glow-team-5 {
+            fill: #FFF200;
+            stroke: #FFF200; /* Yellow */
+            stroke-width: 1;
+            filter: url(#glow-yellow);
+        }
+        .glow-team-6 {
+            fill: #4CFF00;
+            stroke: #4CFF00; /* Green */
+            stroke-width: 1;
+            filter: url(#glow-green);
+        }
+        #leaderboard {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        .synergy-outline {
+            fill: none;
+            stroke: black;
+            stroke-width: 40;
+            z-index: 500;
+        }
+        .color-cube {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 5px;
+            border: 1px solid #000;
+        }
+        .settings {
+            margin-top: 20px;
+        }
+        .settings h4 {
+            margin-top: 0;
+        }
+        .settings .form-check,
+        .settings .form-select {
+            margin-bottom: 10px;
+        }
+        .hexagon-text {
+            fill: black;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            word-wrap: break-word;
+            white-space: pre-wrap; 
+        }
+        .challenge-box {
+            background: #f8f9fa;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
+
+        .time-left {
+            color: #000; 
+            font-weight: bold;
+        }
+
+        .time-left.warning {
+            color: orange; 
+        }
+
+        .time-left.danger {
+            color: red; 
+        }
+
+        .challenge-ended {
+            color: #6c757d; 
+            text-decoration: none;
+            cursor: default;
+        }
+        .btn-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: none;
+        }
+
+        .btn-link:focus {
+            box-shadow: none;
+        }
+
+        .bi-chevron-down, .bi-chevron-up {
+            font-size: 1.2rem;
+        }
+
+        .modal-dialog {
+            max-width: 800px;
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="full-page-container">
+        <div id="leaderboard" class="border rounded p-3">
+            <div class="d-flex align-items-center mb-2">
+                <button id="leaderboardToggleButton" class="btn btn-link p-0 me-2">
+                    <i class="bi bi-chevron-down" id="leaderboardToggleIcon"></i>
+                </button>
+                <h4 class="m-0">Leaderboard</h4>
+            </div>
+            <div id="leaderboardSection" class="collapse show">
+                <ul id="leaderboard-list" class="list-unstyled mb-0">
+                    <!-- Leaderboard entries will be inserted here -->
+                </ul>
+
+                <div class="d-flex align-items-center mb-2 mt-3">
+                    <button id="settingsToggleButton" class="btn btn-link p-0 me-2">
+                        <i class="bi bi-chevron-down" id="settingsToggleIcon"></i>
+                    </button>
+                    <h5 class="m-0">Settings</h5>
+                </div>
+                <div id="settingsSection" class="collapse">
+                    <div class="bg-light p-3">
+                        <!--<div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="displayTextToggle">
+                            <label class="form-check-label" for="displayTextToggle">Display Text on Hexagons</label>
+                        </div>-->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="toggleHexagons" checked>
+                            <label class="form-check-label" for="toggleHexagons">Toggle Hexagons</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge-box mt-3 p-3" id="challengesSection">
+                    <h5>Challenges</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#" class="challenge-link" data-id="1" title="Tears of Guthix Challenge">Challenge 1 - Ends in <span class="time-left" data-id="1"></span></a></li>
+                        <li><a href="#" class="challenge-link" data-id="2" title="Barbarian Assault Challenge">Challenge 2 - Ends in <span class="time-left" data-id="2"></span></a></li>
+                        <li><a href="#" class="challenge-link" data-id="3" title="Hespori Speed Challenge">Challenge 3 - Ends in <span class="time-left" data-id="3"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <svg class="svg-overlay" viewBox="0 0 7000 8000" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+              <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+              <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+              <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+              <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+              <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+          </defs>
+          <polygon class="hexagon" points="2239,1125,2239,1403,1999,1542,1758,1403,1758,1125,1999,986" alt="Hexagon 0-0" data-id="0-0"></polygon>
+          <polygon class="hexagon" points="2740,1125,2740,1403,2499,1542,2258,1403,2258,1125,2499,986" alt="Hexagon 0-1" data-id="0-1"></polygon>
+          <polygon class="hexagon" points="3240,1125,3240,1403,2999,1542,2759,1403,2759,1125,2999,986" alt="Hexagon 0-2" data-id="0-2"></polygon>
+          <polygon class="hexagon" points="3741,1125,3741,1403,3500,1542,3259,1403,3259,1125,3500,986" alt="Hexagon 0-3" data-id="0-3"></polygon>
+          <polygon class="hexagon" points="4241,1125,4241,1403,4000,1542,3759,1403,3759,1125,4000,986" alt="Hexagon 0-4" data-id="0-4"></polygon>
+          <polygon class="hexagon" points="4741,1125,4741,1403,4501,1542,4260,1403,4260,1125,4501,986" alt="Hexagon 0-5" data-id="0-5"></polygon>
+          <polygon class="hexagon" points="5242,1125,5242,1403,5001,1542,4760,1403,4760,1125,5001,986" alt="Hexagon 0-6" data-id="0-6"></polygon>
+          <polygon class="hexagon" points="1989,1559,1989,1837,1748,1976,1508,1837,1508,1559,1748,1420" alt="Hexagon 1-0" data-id="1-0"></polygon>
+          <polygon class="hexagon" points="2490,1559,2490,1837,2249,1976,2008,1837,2008,1559,2249,1420" alt="Hexagon 1-1" data-id="1-1"></polygon>
+          <polygon class="hexagon" points="2990,1559,2990,1837,2749,1976,2508,1837,2508,1559,2749,1420" alt="Hexagon 1-2" data-id="1-2"></polygon>
+          <polygon class="hexagon" points="3490,1559,3490,1837,3250,1976,3009,1837,3009,1559,3250,1420" alt="Hexagon 1-3" data-id="1-3"></polygon>
+          <polygon class="hexagon" points="3991,1559,3991,1837,3750,1976,3509,1837,3509,1559,3750,1420" alt="Hexagon 1-4" data-id="1-4"></polygon>
+          <polygon class="hexagon" points="4491,1559,4491,1837,4250,1976,4010,1837,4010,1559,4250,1420" alt="Hexagon 1-5" data-id="1-5"></polygon>
+          <polygon class="hexagon" points="4992,1559,4992,1837,4751,1976,4510,1837,4510,1559,4751,1420" alt="Hexagon 1-6" data-id="1-6"></polygon>
+          <polygon class="hexagon" points="5492,1559,5492,1837,5251,1976,5010,1837,5010,1559,5251,1420" alt="Hexagon 1-7" data-id="1-7"></polygon>
+          <polygon class="hexagon" points="1739,1992,1739,2270,1498,2409,1257,2270,1257,1992,1498,1853" alt="Hexagon 2-0" data-id="2-0"></polygon>
+          <polygon class="hexagon" points="2239,1992,2239,2270,1999,2409,1758,2270,1758,1992,1999,1853" alt="Hexagon 2-1" data-id="2-1"></polygon>
+          <polygon class="hexagon" points="2740,1992,2740,2270,2499,2409,2258,2270,2258,1992,2499,1853" alt="Hexagon 2-2" data-id="2-2"></polygon>
+          <polygon class="hexagon" points="3240,1992,3240,2270,2999,2409,2759,2270,2759,1992,2999,1853" alt="Hexagon 2-3" data-id="2-3"></polygon>
+          <polygon class="hexagon" points="3741,1992,3741,2270,3500,2409,3259,2270,3259,1992,3500,1853" alt="Hexagon 2-4" data-id="2-4"></polygon>
+          <polygon class="hexagon" points="4241,1992,4241,2270,4000,2409,3759,2270,3759,1992,4000,1853" alt="Hexagon 2-5" data-id="2-5"></polygon>
+          <polygon class="hexagon" points="4741,1992,4741,2270,4501,2409,4260,2270,4260,1992,4501,1853" alt="Hexagon 2-6" data-id="2-6"></polygon>
+          <polygon class="hexagon" points="5242,1992,5242,2270,5001,2409,4760,2270,4760,1992,5001,1853" alt="Hexagon 2-7" data-id="2-7"></polygon>
+          <polygon class="hexagon" points="5742,1992,5742,2270,5501,2409,5261,2270,5261,1992,5501,1853" alt="Hexagon 2-8" data-id="2-8"></polygon>
+          <polygon class="hexagon" points="1489,2425,1489,2703,1248,2842,1007,2703,1007,2425,1248,2286" alt="Hexagon 3-0" data-id="3-0"></polygon>
+          <polygon class="hexagon" points="1989,2425,1989,2703,1748,2842,1508,2703,1508,2425,1748,2286" alt="Hexagon 3-1" data-id="3-1"></polygon>
+          <polygon class="hexagon" points="2490,2425,2490,2703,2249,2842,2008,2703,2008,2425,2249,2286" alt="Hexagon 3-2" data-id="3-2"></polygon>
+          <polygon class="hexagon" points="2990,2425,2990,2703,2749,2842,2508,2703,2508,2425,2749,2286" alt="Hexagon 3-3" data-id="3-3"></polygon>
+          <polygon class="hexagon" points="3490,2425,3490,2703,3250,2842,3009,2703,3009,2425,3250,2286" alt="Hexagon 3-4" data-id="3-4"></polygon>
+          <polygon class="hexagon" points="3991,2425,3991,2703,3750,2842,3509,2703,3509,2425,3750,2286" alt="Hexagon 3-5" data-id="3-5"></polygon>
+          <polygon class="hexagon" points="4491,2425,4491,2703,4250,2842,4010,2703,4010,2425,4250,2286" alt="Hexagon 3-6" data-id="3-6"></polygon>
+          <polygon class="hexagon" points="4992,2425,4992,2703,4751,2842,4510,2703,4510,2425,4751,2286" alt="Hexagon 3-7" data-id="3-7"></polygon>
+          <polygon class="hexagon" points="5492,2425,5492,2703,5251,2842,5010,2703,5010,2425,5251,2286" alt="Hexagon 3-8" data-id="3-8"></polygon>
+          <polygon class="hexagon" points="5992,2425,5992,2703,5752,2842,5511,2703,5511,2425,5752,2286" alt="Hexagon 3-9" data-id="3-9"></polygon>
+          <polygon class="hexagon" points="1239,2859,1239,3137,998,3276,757,3137,757,2859,998,2720" alt="Hexagon 4-0" data-id="4-0"></polygon>
+          <polygon class="hexagon" points="1739,2859,1739,3137,1498,3276,1257,3137,1257,2859,1498,2720" alt="Hexagon 4-1" data-id="4-1"></polygon>
+          <polygon class="hexagon" points="2239,2859,2239,3137,1999,3276,1758,3137,1758,2859,1999,2720" alt="Hexagon 4-2" data-id="4-2"></polygon>
+          <polygon class="hexagon" points="2740,2859,2740,3137,2499,3276,2258,3137,2258,2859,2499,2720" alt="Hexagon 4-3" data-id="4-3"></polygon>
+          <polygon class="hexagon" points="3240,2859,3240,3137,2999,3276,2759,3137,2759,2859,2999,2720" alt="Hexagon 4-4" data-id="4-4"></polygon>
+          <polygon class="hexagon" points="3741,2859,3741,3137,3500,3276,3259,3137,3259,2859,3500,2720" alt="Hexagon 4-5" data-id="4-5"></polygon>
+          <polygon class="hexagon" points="4241,2859,4241,3137,4000,3276,3759,3137,3759,2859,4000,2720" alt="Hexagon 4-6" data-id="4-6"></polygon>
+          <polygon class="hexagon" points="4741,2859,4741,3137,4501,3276,4260,3137,4260,2859,4501,2720" alt="Hexagon 4-7" data-id="4-7"></polygon>
+          <polygon class="hexagon" points="5242,2859,5242,3137,5001,3276,4760,3137,4760,2859,5001,2720" alt="Hexagon 4-8" data-id="4-8"></polygon>
+          <polygon class="hexagon" points="5742,2859,5742,3137,5501,3276,5261,3137,5261,2859,5501,2720" alt="Hexagon 4-9" data-id="4-9"></polygon>
+          <polygon class="hexagon" points="6243,2859,6243,3137,6002,3276,5761,3137,5761,2859,6002,2720" alt="Hexagon 4-10" data-id="4-10"></polygon>
+          <polygon class="hexagon" points="988,3292,988,3570,748,3709,507,3570,507,3292,748,3153" alt="Hexagon 5-0" data-id="5-0"></polygon>
+          <polygon class="hexagon" points="1489,3292,1489,3570,1248,3709,1007,3570,1007,3292,1248,3153" alt="Hexagon 5-1" data-id="5-1"></polygon>
+          <polygon class="hexagon" points="1989,3292,1989,3570,1748,3709,1508,3570,1508,3292,1748,3153" alt="Hexagon 5-2" data-id="5-2"></polygon>
+          <polygon class="hexagon" points="2490,3292,2490,3570,2249,3709,2008,3570,2008,3292,2249,3153" alt="Hexagon 5-3" data-id="5-3"></polygon>
+          <polygon class="hexagon" points="2990,3292,2990,3570,2749,3709,2508,3570,2508,3292,2749,3153" alt="Hexagon 5-4" data-id="5-4"></polygon>
+          <polygon class="hexagon" points="3490,3292,3490,3570,3250,3709,3009,3570,3009,3292,3250,3153" alt="Hexagon 5-5" data-id="5-5"></polygon>
+          <polygon class="hexagon" points="3991,3292,3991,3570,3750,3709,3509,3570,3509,3292,3750,3153" alt="Hexagon 5-6" data-id="5-6"></polygon>
+          <polygon class="hexagon" points="4491,3292,4491,3570,4250,3709,4010,3570,4010,3292,4250,3153" alt="Hexagon 5-7" data-id="5-7"></polygon>
+          <polygon class="hexagon" points="4992,3292,4992,3570,4751,3709,4510,3570,4510,3292,4751,3153" alt="Hexagon 5-8" data-id="5-8"></polygon>
+          <polygon class="hexagon" points="5492,3292,5492,3570,5251,3709,5010,3570,5010,3292,5251,3153" alt="Hexagon 5-9" data-id="5-9"></polygon>
+          <polygon class="hexagon" points="5992,3292,5992,3570,5752,3709,5511,3570,5511,3292,5752,3153" alt="Hexagon 5-10" data-id="5-10"></polygon>
+          <polygon class="hexagon" points="6493,3292,6493,3570,6252,3709,6011,3570,6011,3292,6252,3153" alt="Hexagon 5-11" data-id="5-11"></polygon>
+          <polygon class="hexagon" points="738,3726,738,4004,497,4143,257,4004,257,3726,497,3587" alt="Hexagon 6-0" data-id="6-0"></polygon>
+          <polygon class="hexagon" points="1239,3726,1239,4004,998,4143,757,4004,757,3726,998,3587" alt="Hexagon 6-1" data-id="6-1"></polygon>
+          <polygon class="hexagon" points="1739,3726,1739,4004,1498,4143,1257,4004,1257,3726,1498,3587" alt="Hexagon 6-2" data-id="6-2"></polygon>
+          <polygon class="hexagon" points="2239,3726,2239,4004,1999,4143,1758,4004,1758,3726,1999,3587" alt="Hexagon 6-3" data-id="6-3"></polygon>
+          <polygon class="hexagon" points="2740,3726,2740,4004,2499,4143,2258,4004,2258,3726,2499,3587" alt="Hexagon 6-4" data-id="6-4"></polygon>
+          <polygon class="hexagon" points="3240,3726,3240,4004,2999,4143,2759,4004,2759,3726,2999,3587" alt="Hexagon 6-5" data-id="6-5"></polygon>
+          <polygon class="hexagon" points="3741,3726,3741,4004,3500,4143,3259,4004,3259,3726,3500,3587" alt="Hexagon 6-6" data-id="6-6"></polygon>
+          <polygon class="hexagon" points="4241,3726,4241,4004,4000,4143,3759,4004,3759,3726,4000,3587" alt="Hexagon 6-7" data-id="6-7"></polygon>
+          <polygon class="hexagon" points="4741,3726,4741,4004,4501,4143,4260,4004,4260,3726,4501,3587" alt="Hexagon 6-8" data-id="6-8"></polygon>
+          <polygon class="hexagon" points="5242,3726,5242,4004,5001,4143,4760,4004,4760,3726,5001,3587" alt="Hexagon 6-9" data-id="6-9"></polygon>
+          <polygon class="hexagon" points="5742,3726,5742,4004,5501,4143,5261,4004,5261,3726,5501,3587" alt="Hexagon 6-10" data-id="6-10"></polygon>
+          <polygon class="hexagon" points="6243,3726,6243,4004,6002,4143,5761,4004,5761,3726,6002,3587" alt="Hexagon 6-11" data-id="6-11"></polygon>
+          <polygon class="hexagon" points="6743,3726,6743,4004,6502,4143,6261,4004,6261,3726,6502,3587" alt="Hexagon 6-12" data-id="6-12"></polygon>
+          <polygon class="hexagon" points="988,4159,988,4437,748,4576,507,4437,507,4159,748,4020" alt="Hexagon 7-0" data-id="7-0"></polygon>
+          <polygon class="hexagon" points="1489,4159,1489,4437,1248,4576,1007,4437,1007,4159,1248,4020" alt="Hexagon 7-1" data-id="7-1"></polygon>
+          <polygon class="hexagon" points="1989,4159,1989,4437,1748,4576,1508,4437,1508,4159,1748,4020" alt="Hexagon 7-2" data-id="7-2"></polygon>
+          <polygon class="hexagon" points="2490,4159,2490,4437,2249,4576,2008,4437,2008,4159,2249,4020" alt="Hexagon 7-3" data-id="7-3"></polygon>
+          <polygon class="hexagon" points="2990,4159,2990,4437,2749,4576,2508,4437,2508,4159,2749,4020" alt="Hexagon 7-4" data-id="7-4"></polygon>
+          <polygon class="hexagon" points="3490,4159,3490,4437,3250,4576,3009,4437,3009,4159,3250,4020" alt="Hexagon 7-5" data-id="7-5"></polygon>
+          <polygon class="hexagon" points="3991,4159,3991,4437,3750,4576,3509,4437,3509,4159,3750,4020" alt="Hexagon 7-6" data-id="7-6"></polygon>
+          <polygon class="hexagon" points="4491,4159,4491,4437,4250,4576,4010,4437,4010,4159,4250,4020" alt="Hexagon 7-7" data-id="7-7"></polygon>
+          <polygon class="hexagon" points="4992,4159,4992,4437,4751,4576,4510,4437,4510,4159,4751,4020" alt="Hexagon 7-8" data-id="7-8"></polygon>
+          <polygon class="hexagon" points="5492,4159,5492,4437,5251,4576,5010,4437,5010,4159,5251,4020" alt="Hexagon 7-9" data-id="7-9"></polygon>
+          <polygon class="hexagon" points="5992,4159,5992,4437,5752,4576,5511,4437,5511,4159,5752,4020" alt="Hexagon 7-10" data-id="7-10"></polygon>
+          <polygon class="hexagon" points="6493,4159,6493,4437,6252,4576,6011,4437,6011,4159,6252,4020" alt="Hexagon 7-11" data-id="7-11"></polygon>
+          <polygon class="hexagon" points="1239,4592,1239,4870,998,5009,757,4870,757,4592,998,4453" alt="Hexagon 8-0" data-id="8-0"></polygon>
+          <polygon class="hexagon" points="1739,4592,1739,4870,1498,5009,1257,4870,1257,4592,1498,4453" alt="Hexagon 8-1" data-id="8-1"></polygon>
+          <polygon class="hexagon" points="2239,4592,2239,4870,1999,5009,1758,4870,1758,4592,1999,4453" alt="Hexagon 8-2" data-id="8-2"></polygon>
+          <polygon class="hexagon" points="2740,4592,2740,4870,2499,5009,2258,4870,2258,4592,2499,4453" alt="Hexagon 8-3" data-id="8-3"></polygon>
+          <polygon class="hexagon" points="3240,4592,3240,4870,2999,5009,2759,4870,2759,4592,2999,4453" alt="Hexagon 8-4" data-id="8-4"></polygon>
+          <polygon class="hexagon" points="3741,4592,3741,4870,3500,5009,3259,4870,3259,4592,3500,4453" alt="Hexagon 8-5" data-id="8-5"></polygon>
+          <polygon class="hexagon" points="4241,4592,4241,4870,4000,5009,3759,4870,3759,4592,4000,4453" alt="Hexagon 8-6" data-id="8-6"></polygon>
+          <polygon class="hexagon" points="4741,4592,4741,4870,4501,5009,4260,4870,4260,4592,4501,4453" alt="Hexagon 8-7" data-id="8-7"></polygon>
+          <polygon class="hexagon" points="5242,4592,5242,4870,5001,5009,4760,4870,4760,4592,5001,4453" alt="Hexagon 8-8" data-id="8-8"></polygon>
+          <polygon class="hexagon" points="5742,4592,5742,4870,5501,5009,5261,4870,5261,4592,5501,4453" alt="Hexagon 8-9" data-id="8-9"></polygon>
+          <polygon class="hexagon" points="6243,4592,6243,4870,6002,5009,5761,4870,5761,4592,6002,4453" alt="Hexagon 8-10" data-id="8-10"></polygon>
+          <polygon class="hexagon" points="1489,5026,1489,5304,1248,5443,1007,5304,1007,5026,1248,4887" alt="Hexagon 9-0" data-id="9-0"></polygon>
+          <polygon class="hexagon" points="1989,5026,1989,5304,1748,5443,1508,5304,1508,5026,1748,4887" alt="Hexagon 9-1" data-id="9-1"></polygon>
+          <polygon class="hexagon" points="2490,5026,2490,5304,2249,5443,2008,5304,2008,5026,2249,4887" alt="Hexagon 9-2" data-id="9-2"></polygon>
+          <polygon class="hexagon" points="2990,5026,2990,5304,2749,5443,2508,5304,2508,5026,2749,4887" alt="Hexagon 9-3" data-id="9-3"></polygon>
+          <polygon class="hexagon" points="3490,5026,3490,5304,3250,5443,3009,5304,3009,5026,3250,4887" alt="Hexagon 9-4" data-id="9-4"></polygon>
+          <polygon class="hexagon" points="3991,5026,3991,5304,3750,5443,3509,5304,3509,5026,3750,4887" alt="Hexagon 9-5" data-id="9-5"></polygon>
+          <polygon class="hexagon" points="4491,5026,4491,5304,4250,5443,4010,5304,4010,5026,4250,4887" alt="Hexagon 9-6" data-id="9-6"></polygon>
+          <polygon class="hexagon" points="4992,5026,4992,5304,4751,5443,4510,5304,4510,5026,4751,4887" alt="Hexagon 9-7" data-id="9-7"></polygon>
+          <polygon class="hexagon" points="5492,5026,5492,5304,5251,5443,5010,5304,5010,5026,5251,4887" alt="Hexagon 9-8" data-id="9-8"></polygon>
+          <polygon class="hexagon" points="5992,5026,5992,5304,5752,5443,5511,5304,5511,5026,5752,4887" alt="Hexagon 9-9" data-id="9-9"></polygon>
+          <polygon class="hexagon" points="1739,5459,1739,5737,1498,5876,1257,5737,1257,5459,1498,5320" alt="Hexagon 10-0" data-id="10-0"></polygon>
+          <polygon class="hexagon" points="2239,5459,2239,5737,1999,5876,1758,5737,1758,5459,1999,5320" alt="Hexagon 10-1" data-id="10-1"></polygon>
+          <polygon class="hexagon" points="2740,5459,2740,5737,2499,5876,2258,5737,2258,5459,2499,5320" alt="Hexagon 10-2" data-id="10-2"></polygon>
+          <polygon class="hexagon" points="3240,5459,3240,5737,2999,5876,2759,5737,2759,5459,2999,5320" alt="Hexagon 10-3" data-id="10-3"></polygon>
+          <polygon class="hexagon" points="3741,5459,3741,5737,3500,5876,3259,5737,3259,5459,3500,5320" alt="Hexagon 10-4" data-id="10-4"></polygon>
+          <polygon class="hexagon" points="4241,5459,4241,5737,4000,5876,3759,5737,3759,5459,4000,5320" alt="Hexagon 10-5" data-id="10-5"></polygon>
+          <polygon class="hexagon" points="4741,5459,4741,5737,4501,5876,4260,5737,4260,5459,4501,5320" alt="Hexagon 10-6" data-id="10-6"></polygon>
+          <polygon class="hexagon" points="5242,5459,5242,5737,5001,5876,4760,5737,4760,5459,5001,5320" alt="Hexagon 10-7" data-id="10-7"></polygon>
+          <polygon class="hexagon" points="5742,5459,5742,5737,5501,5876,5261,5737,5261,5459,5501,5320" alt="Hexagon 10-8" data-id="10-8"></polygon>
+          <polygon class="hexagon" points="1989,5892,1989,6170,1748,6309,1508,6170,1508,5892,1748,5753" alt="Hexagon 11-0" data-id="11-0"></polygon>
+          <polygon class="hexagon" points="2490,5892,2490,6170,2249,6309,2008,6170,2008,5892,2249,5753" alt="Hexagon 11-1" data-id="11-1"></polygon>
+          <polygon class="hexagon" points="2990,5892,2990,6170,2749,6309,2508,6170,2508,5892,2749,5753" alt="Hexagon 11-2" data-id="11-2"></polygon>
+          <polygon class="hexagon" points="3490,5892,3490,6170,3250,6309,3009,6170,3009,5892,3250,5753" alt="Hexagon 11-3" data-id="11-3"></polygon>
+          <polygon class="hexagon" points="3991,5892,3991,6170,3750,6309,3509,6170,3509,5892,3750,5753" alt="Hexagon 11-4" data-id="11-4"></polygon>
+          <polygon class="hexagon" points="4491,5892,4491,6170,4250,6309,4010,6170,4010,5892,4250,5753" alt="Hexagon 11-5" data-id="11-5"></polygon>
+          <polygon class="hexagon" points="4992,5892,4992,6170,4751,6309,4510,6170,4510,5892,4751,5753" alt="Hexagon 11-6" data-id="11-6"></polygon>
+          <polygon class="hexagon" points="5492,5892,5492,6170,5251,6309,5010,6170,5010,5892,5251,5753" alt="Hexagon 11-7" data-id="11-7"></polygon>
+          <polygon class="hexagon" points="2239,6326,2239,6604,1999,6743,1758,6604,1758,6326,1999,6187" alt="Hexagon 12-0" data-id="12-0"></polygon>
+          <polygon class="hexagon" points="2740,6326,2740,6604,2499,6743,2258,6604,2258,6326,2499,6187" alt="Hexagon 12-1" data-id="12-1"></polygon>
+          <polygon class="hexagon" points="3240,6326,3240,6604,2999,6743,2759,6604,2759,6326,2999,6187" alt="Hexagon 12-2" data-id="12-2"></polygon>
+          <polygon class="hexagon" points="3741,6326,3741,6604,3500,6743,3259,6604,3259,6326,3500,6187" alt="Hexagon 12-3" data-id="12-3"></polygon>
+          <polygon class="hexagon" points="4241,6326,4241,6604,4000,6743,3759,6604,3759,6326,4000,6187" alt="Hexagon 12-4" data-id="12-4"></polygon>
+          <polygon class="hexagon" points="4741,6326,4741,6604,4501,6743,4260,6604,4260,6326,4501,6187" alt="Hexagon 12-5" data-id="12-5"></polygon>
+          <polygon class="hexagon" points="5242,6326,5242,6604,5001,6743,4760,6604,4760,6326,5001,6187" alt="Hexagon 12-6" data-id="12-6"></polygon>
+        </svg>
+        <div class="info-box" id="infoBox">
+            <div class="hex-id" id="hexId"></div>
+            <div>
+                Item Name: <span id="itemName"></span><br>
+                Item Quantity: <span id="itemQuantity"></span><br>
+                Owned By: <span id="ownedBy"></span><br>
+                Tile Points: <span id="tilePoints"></span>
+            </div>
+        </div>
+
+        <!-- Modal for challenge details -->
+        <div class="modal fade" id="challengeModal" tabindex="-1" aria-labelledby="challengeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="challengeModalLabel">Challenge Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="challenge-info"></p>
+                        <ul id="challenge-steps"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="challenges.js"></script>
+    <script src="hexagon.js"></script>
+
+    
+    <script src="script.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

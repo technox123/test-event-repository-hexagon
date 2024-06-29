@@ -18,7 +18,7 @@ const challenges = [
     {
         id: 2,
         title: "Barbarian Assault Challenge",
-        endTime: '2024-07-01T00:00:00Z',
+        endTime: '2024-06-30T23:00:00Z',
         steps: [
             { text: "Multiple attempts allowed, no ringers please, only team mates."},
             { text: "The <strong>password for this event is 'What the Hex'</strong>. The final screenshot must show <strong>ALL</strong> of your team-mates saying this as you reappear by the ladder, and include the <strong>game duration in the chat log.</strong>"},

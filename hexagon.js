@@ -34,14 +34,14 @@ const hexagonData = {
     "0-3": {
         "itemName": "Leaf-Bladed Sword",
         "itemQuantity": 2,
-        "ownedBy": "Team 6",
+        "ownedBy": "Team 1",
         "tilePoints": 3,
         "visited": false
     },
     "0-4": {
         "itemName": "Dark Mystic Boot",
         "itemQuantity": 2,
-        "ownedBy": "Team 4",
+        "ownedBy": "Team 1",
         "tilePoints": 3,
         "visited": false
     },
@@ -69,14 +69,14 @@ const hexagonData = {
     "1-1": {
         "itemName": "Yew Comp Bow",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 2",
         "tilePoints": 4,
         "visited": false
     },
     "1-2": {
         "itemName": "Any Obsidian Armour",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 4,
         "visited": false
     },
@@ -90,7 +90,7 @@ const hexagonData = {
     "1-4": {
         "itemName": "Seer's Ring",
         "itemQuantity": 2,
-        "ownedBy": "Team 6",
+        "ownedBy": "Team 1",
         "tilePoints": 4,
         "visited": false
     },
@@ -111,14 +111,14 @@ const hexagonData = {
     "1-7": {
         "itemName": "Basilisk Head",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 3,
         "visited": false
     },
     "2-0": {
         "itemName": "Sandwich Lady Top",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 3,
         "visited": false
     },
@@ -139,35 +139,35 @@ const hexagonData = {
     "2-3": {
         "itemName": "Unsired",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 5,
         "visited": false
     },
     "2-4": {
         "itemName": "Sarachnis Cudgels",
         "itemQuantity": 2,
-        "ownedBy": "Team 6",
+        "ownedBy": "free",
         "tilePoints": 5,
         "visited": false
     },
     "2-5": {
         "itemName": "Big Swordfish",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 5,
         "visited": false
     },
     "2-6": {
         "itemName": "Smoke Battlestaff",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 5,
         "visited": false
     },
     "2-7": {
         "itemName": "Warrior Ring",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 4,
         "visited": false
     },
@@ -202,14 +202,14 @@ const hexagonData = {
     "3-3": {
         "itemName": "Piece of Armadyl",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 6,
         "visited": false
     },
     "3-4": {
         "itemName": "Abyssal Lantern",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 6,
         "visited": false
     },
@@ -223,7 +223,7 @@ const hexagonData = {
     "3-6": {
         "itemName": "Shadow Quartz",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 6,
         "visited": false
     },
@@ -258,7 +258,7 @@ const hexagonData = {
     "4-1": {
         "itemName": "Granite Ring",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 4,
         "visited": false
     },
@@ -272,14 +272,14 @@ const hexagonData = {
     "4-3": {
         "itemName": "Malediction Ward",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 6,
         "visited": false
     },
     "4-4": {
         "itemName": "Magic Fang",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 7,
         "visited": false
     },
@@ -293,14 +293,14 @@ const hexagonData = {
     "4-6": {
         "itemName": "Elidnis Ward",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 7,
         "visited": false
     },
     "4-7": {
         "itemName": "Crystal Armour Seed",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 6,
         "visited": false
     },
@@ -349,14 +349,14 @@ const hexagonData = {
     "5-3": {
         "itemName": "Blood Quartz",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 6,
         "visited": false
     },
     "5-4": {
         "itemName": "Tome of Fire",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 7,
         "visited": false
     },
@@ -370,28 +370,28 @@ const hexagonData = {
     "5-6": {
         "itemName": "Echo Crystal",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 1",
         "tilePoints": 9,
         "visited": false
     },
     "5-7": {
         "itemName": "Any inq. Piece, Orb or Staff",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 7,
         "visited": false
     },
     "5-8": {
         "itemName": "Spirit Shield",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 6,
         "visited": false
     },
     "5-9": {
         "itemName": "Zenyte Shard",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 5,
         "visited": false
     },
@@ -433,7 +433,7 @@ const hexagonData = {
     "6-3": {
         "itemName": "Saradomin Sword",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 6,
         "visited": false
     },
@@ -447,7 +447,7 @@ const hexagonData = {
     "6-5": {
         "itemName": "Virus Armour",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 9,
         "visited": false
     },
@@ -461,28 +461,28 @@ const hexagonData = {
     "6-7": {
         "itemName": "Dragon Hunter Crossbow",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 9,
         "visited": false
     },
     "6-8": {
         "itemName": "Tome of Water",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 7,
         "visited": false
     },
     "6-9": {
         "itemName": "Zamorakian Spear",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 3",
         "tilePoints": 6,
         "visited": false
     },
     "6-10": {
         "itemName": "Magic Comp Bow",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 5,
         "visited": false
     },
@@ -510,21 +510,21 @@ const hexagonData = {
     "7-1": {
         "itemName": "Willow Comp Bow",
         "itemQuantity": 2,
-        "ownedBy": "Team 3",
+        "ownedBy": "Team 5",
         "tilePoints": 4,
         "visited": false
     },
     "7-2": {
         "itemName": "Big Bass",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 5,
         "visited": false
     },
     "7-3": {
         "itemName": "Ranger Boots",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 5",
         "tilePoints": 6,
         "visited": false
     },
@@ -552,63 +552,63 @@ const hexagonData = {
     "7-7": {
         "itemName": "Voidwaker Blade",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 7,
         "visited": false
     },
     "7-8": {
         "itemName": "Smoke Quartz",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 6,
         "visited": false
     },
     "7-9": {
         "itemName": "Blood Shard",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 5,
         "visited": false
     },
     "7-10": {
         "itemName": "Drakes Claws",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 4,
         "visited": false
     },
     "7-11": {
         "itemName": "Fox Whistles",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 3,
         "visited": false
     },
     "8-0": {
         "itemName": "Mask of Ranul",
         "itemQuantity": 2,
-        "ownedBy": "Team 3",
+        "ownedBy": "Team 2",
         "tilePoints": 3,
         "visited": false
     },
     "8-1": {
         "itemName": "Any Pieces of Torags",
         "itemQuantity": 2,
-        "ownedBy": "Team 3",
+        "ownedBy": "Team 4",
         "tilePoints": 4,
         "visited": false
     },
     "8-2": {
         "itemName": "Dragon Chainbody",
         "itemQuantity": 2,
-        "ownedBy": "Team 3",
+        "ownedBy": "Team 5",
         "tilePoints": 5,
         "visited": false
     },
     "8-3": {
         "itemName": "Crystal Weapon Seed",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 6,
         "visited": false
     },
@@ -622,7 +622,7 @@ const hexagonData = {
     "8-5": {
         "itemName": "Golden Tench",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 7,
         "visited": false
     },
@@ -636,7 +636,7 @@ const hexagonData = {
     "8-7": {
         "itemName": "Odium Ward",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 6,
         "visited": false
     },
@@ -671,7 +671,7 @@ const hexagonData = {
     "9-1": {
         "itemName": "Berserker Ring",
         "itemQuantity": 2,
-        "ownedBy": "Team 3",
+        "ownedBy": "Team 4",
         "tilePoints": 4,
         "visited": false
     },
@@ -685,35 +685,35 @@ const hexagonData = {
     "9-3": {
         "itemName": "Ice Quartz",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 6,
         "visited": false
     },
     "9-4": {
         "itemName": "Basilisk Jaw",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 6,
         "visited": false
     },
     "9-5": {
         "itemName": "Monkey Tail",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 6,
         "visited": false
     },
     "9-6": {
         "itemName": "Piece of Bandos",
         "itemQuantity": 1,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 6,
         "visited": false
     },
     "9-7": {
         "itemName": "Big Shark",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 5,
         "visited": false
     },
@@ -734,28 +734,28 @@ const hexagonData = {
     "10-0": {
         "itemName": "Golden Pheasant Egg",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 3,
         "visited": false
     },
     "10-1": {
         "itemName": "Any Piece of Guild Hunter",
         "itemQuantity": 2,
-        "ownedBy": "Team 6",
+        "ownedBy": "Team 4",
         "tilePoints": 4,
         "visited": false
     },
     "10-2": {
         "itemName": "Kraken Tentacle",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 5,
         "visited": false
     },
     "10-3": {
         "itemName": "Venator Shard",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 5,
         "visited": false
     },
@@ -769,21 +769,21 @@ const hexagonData = {
     "10-5": {
         "itemName": "Any Rev Statuettes",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 5,
         "visited": false
     },
     "10-6": {
         "itemName": "Granite Hammer",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 5,
         "visited": false
     },
     "10-7": {
         "itemName": "Any Champion Scroll",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 4,
         "visited": false
     },
@@ -804,7 +804,7 @@ const hexagonData = {
     "11-1": {
         "itemName": "Amulet of Strength (T)",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 6",
         "tilePoints": 4,
         "visited": false
     },
@@ -832,7 +832,7 @@ const hexagonData = {
     "11-5": {
         "itemName": "Mud Battlestaff",
         "itemQuantity": 2,
-        "ownedBy": "free",
+        "ownedBy": "Team 4",
         "tilePoints": 4,
         "visited": false
     },

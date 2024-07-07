@@ -35,5 +35,27 @@ const challenges = [
             { text: "Fastest 3 times from each team will be totalled to decide the winning team."},
         ],
         info: "Kill hespori in the fastest time possible <strong>using only Barrows gear in the head, chest, legs and weapons slots.</strong> You can use anything else in other slots, capes, jewellry etc."
+    },
+    {
+        id: 4,
+        title: "Little Big Drop Challenge",
+        endTime: '2024-07-06T23:00:00Z',
+        steps: [
+            { text: "The winning team will be the one whos 8th best player has the highest value across all teams. So stronger players help the lower levels for best chance to win."},
+            { text: "Any drops from any source count, including ones you have already got."},
+            { text: "Screenshots must include your name, the standard password and either a picture of the drop in a chest, or the drop in the chat log.<br><strong>Clue rewards count!</strong<"},
+        ],
+        info: "You should all be able to see a new thread in your team chats called High Value Drops. Please use this to post your highest value drop of the event, and update it when you get a better drop by deleting the old post, so one drop per player."
+    },
+    {
+        id: 5,
+        title: "The Standard Jad Challenge",
+        endTime: '2024-07-02T12:00:00Z',
+        steps: [
+            { text: "The winning team will be the one whos 8th best player has the highest value across all teams. So stronger players help the lower levels for best chance to win."},
+            { text: "Make sure your settings will show repeat completion of combat tasks as shown below.", image: "challenges/5/example.png" },
+            { text: "Screenshot with the challenge password, your name, the CA completion and kill time pls."},
+        ],
+        info: "Fastest Jad kill while completing 'Facing Jad head-on' wins, simple."
     }
 ];
